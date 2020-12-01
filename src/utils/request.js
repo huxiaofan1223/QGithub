@@ -1,5 +1,6 @@
 import Storage from './storage'
 import loadingUtils from './loadingUtils'
+import {refreshToken} from './utils'
 const baseURL = "https://api.github.com"
 
 function qs(params){
@@ -37,6 +38,14 @@ const request = async (url,method,params,loading=true)=>{
         return res.json()
       })
 			.then((responseJson) => {
+        if(responseJson.message == "Bad credentials"){
+          refreshToken().then(res=>{
+            Storage.set("refreshToken",res.refresh_token)
+            Storage.set("token",'token '+res.access_token).then(res=>{
+              return request(url,method,params,loading)
+            })
+          })
+        }
         loading&&loadingUtils.hide()
         resolve(responseJson)
       })

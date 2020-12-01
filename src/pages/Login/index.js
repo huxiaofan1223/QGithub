@@ -21,10 +21,9 @@ class LoginPage extends Component {
 		}
 	}
 	async componentDidMount(){
-		let _this = this
 		const token = await Storage.get("token")
 		if(token){
-			_this.props.navigation.dispatch(resetAction)
+			this.props.navigation.dispatch(resetAction)
 		}
 		else
 			this.setState({show:true})
