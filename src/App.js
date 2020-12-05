@@ -42,7 +42,7 @@ const Container = createStackNavigator({
         Others:{screen:OthersPage},
         Followers:{screen:FollowerPage},
         Following:{screen:FollowingPage},
-        Auth:{screen:AuthPage}
+        Auth:{screen:AuthPage},
     },
     {
         initialRouteName: 'Login',

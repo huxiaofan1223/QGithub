@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
 import UserPage from './pages/Tabs/Home';
 import SearchPage from './pages/Tabs/Search';
