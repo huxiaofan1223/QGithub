@@ -1,5 +1,6 @@
 import Storage from './storage'
 import loadingUtils from './loadingUtils'
+import {clientID,secret} from '../config'
 
 const baseURL = "https://api.github.com"
 let isRefershing = true
@@ -26,7 +27,7 @@ function afterRefreshToken(){
 	requestList = []
 }
 
-function formQs(){
+function formQs(params){
   if (params) {
     let paramsArray = []
     Object.keys(params).forEach(key => paramsArray.push(key + '=' + params[key]))
@@ -36,6 +37,7 @@ function formQs(){
 }
 
 async function refreshToken(){
+  isRefershing = false
   const url = 'https://github.com/login/oauth/access_token'
   const refresh_token = await Storage.get("refreshToken")
   const params = {
