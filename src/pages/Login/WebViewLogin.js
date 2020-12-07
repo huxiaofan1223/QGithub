@@ -44,7 +44,6 @@ export default class AuthPage extends Component{
 			let tokenInfo = this.qs2json(res)
 			const token = tokenInfo.access_token         //token8个小时过期
 			Storage.set("refreshToken",tokenInfo.refresh_token)    //存refresh_token   6个月过期
-			console.log(tokenInfo)
 			Storage.set("token","token "+token).then(()=>{
 				loadingUtils.hide()
 				this.props.navigation.dispatch(resetAction)

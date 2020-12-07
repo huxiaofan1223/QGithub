@@ -67,8 +67,7 @@ async function refreshToken(){
     })
   })
 }
-
-const request = async (url,method,params,loading=true)=>{
+async function request(url,method,params,loading=true){
   const args = arguments
   loading&&loadingUtils.show()
   const newUrl = url.indexOf("http")!= -1 ? url:`${baseURL}${url}`
