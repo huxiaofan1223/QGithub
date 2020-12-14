@@ -253,15 +253,15 @@ export default class RepoPage extends Component {
                         source={{html:MarkdownWebView(this.state.htmlContent)}}
                         injectedJavaScript='window.ReactNativeWebView.postMessage(document.body.scrollHeight)'
                         onMessage={this.calcHeight.bind(this)}
-                        onShouldStartLoadWithRequest={(e)=> {
-                            Alert.alert('即将使用浏览器打开网页',e.url,
-                                [
-                                    {text:"取消", onPress:()=>false},
-                                    {text:"确认", onPress:()=>{Linking.openURL(e.url)}}
-                                ]
-                            );
-                            return false
-                        }}
+                        // onShouldStartLoadWithRequest={(e)=> {
+                        //     Alert.alert('即将使用浏览器打开网页',e.url,
+                        //         [
+                        //             {text:"取消", onPress:()=>false},
+                        //             {text:"确认", onPress:()=>{Linking.openURL(e.url)}}
+                        //         ]
+                        //     );
+                        //     return false
+                        // }}
                     ></WebView>
                 </ScrollView>
         );

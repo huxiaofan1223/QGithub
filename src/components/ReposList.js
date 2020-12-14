@@ -51,7 +51,7 @@ const RepoList = (props) => {
             <View style={{padding:20,paddingTop:15,paddingLeft:10,paddingRight:10,justifyContent:"center"}}>
                 <View style={{flexDirection:"row",alignItems:"center"}}>
                     <Text style={{marginRight:20,fontSize:17,color:"#1e90ff"}}>{item.name}</Text>
-                    {item.private&&(<Text style={{height:16,backgroundColor:"red",lineHeight:16,paddingLeft:5,paddingRight:5,borderRadius:8,color:"white",fontSize:10}}>Private</Text>)}
+                    {item.private&&(<View style={{height:16,backgroundColor:"red",lineHeight:16,paddingLeft:5,paddingRight:5,borderRadius:8}}><Text style={{color:"white",fontSize:10}}>Private</Text></View>)}
                 </View>
                 <View style={{flexDirection:"row",alignItems:"center",justifyContent:"space-between",marginTop:5}}>
                     <Text style={{color:"#555"}}>{item.description}</Text>
