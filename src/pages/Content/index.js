@@ -118,7 +118,8 @@ export default class ContentPage extends Component {
             php:["php"],
             css:["css","less","scss"],
             html:["html"],
-            javascript:["js","vue","ts"]
+            javascript:["js","vue","ts","tsx"],
+            dart:["dart"]
         }
         for(var key in dict){
             if(dict[key].includes(fileType))
