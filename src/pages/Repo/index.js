@@ -198,9 +198,9 @@ export default class RepoPage extends Component {
                     <View style={{padding:20,paddingTop:0,paddingBottom:0}}>
                         <View style={{flexDirection:"row",marginBottom:10,marginTop:20}}>
                             <View style={{flexDirection:"row",alignItems:"center"}}>
-                                <Text style={{fontWeight:'300',fontSize:18,color:"#1e90ff"}} onPress={this.toUser.bind(this)}>{this.state.repoInfo.owner.login}</Text>
+                                <Text style={{fontWeight:'400',fontSize:18,color:"#1e90ff"}} onPress={this.toUser.bind(this)}>{this.state.repoInfo.owner.login}</Text>
                                 <Text style={{marginLeft:5,marginRight:5,fontSize:18}}>/</Text>
-                                <Text style={{fontWeight:'600',fontSize:20,color:"#1e90ff"}}>{this.state.repoInfo.name}</Text>
+                                <Text style={{fontWeight:'500',fontSize:20,color:"#1e90ff"}}>{this.state.repoInfo.name}</Text>
                             </View>
                         </View>
                         <View style={{marginBottom:10}}>
