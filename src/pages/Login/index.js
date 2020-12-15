@@ -1,10 +1,12 @@
 import React, {Component} from "react";
-import { View, StyleSheet,TextInput ,TouchableHighlight, Text, Image, ToastAndroid} from "react-native";
+import { View, StyleSheet,TextInput ,TouchableHighlight, Text, Image} from "react-native";
 import { base64_encode } from '../../utils/base64'
 import Storage from '../../utils/storage'
 import api from '../../utils/request'
 import {StackActions,NavigationActions} from 'react-navigation'
 import CookieManager from 'react-native-cookies'
+import MyToast from "../../utils/Toast";
+
 
 const resetAction = StackActions.reset({
   index: 0,
@@ -43,31 +45,37 @@ class LoginPage extends Component {
 		this.refs.usn.blur()
 		this.refs.pwd.blur()
 		let{ username,password } = this.state
+		CookieManager.clearAll()
+		this.props.navigation.navigate("Auth")  //清空webview cookies并且跳转到github认证页面
+		return 
+
 		if (!username){
 			this.refs.usn.focus()
-			return ToastAndroid.show('请输入账号', ToastAndroid.SHORT)
+			return MyToast("请输入账号")
 		}
 		if(!password){
 			this.refs.pwd.focus()
-			return ToastAndroid.show('请输入密码', ToastAndroid.SHORT)
+			return MyToast("请输入密码")
 		}
-		Storage.set('token','Basic ' + base64_encode(username + ':' + password))
-		api.get("/user").then(res=>{
-			if(res.message == "Requires authentication"||res.message=="Bad credentials"){
-				Storage.set("token","")
-				return ToastAndroid.show('账号或密码错误', ToastAndroid.SHORT)
-			}
-			if(res.message == "Bad credentials. The API can't be accessed using username/password authentication. Please create a personal access token to access this endpoint: http://github.com/settings/tokens"){
-				ToastAndroid.show('不能使用账号密码登陆,此账号api已经被封', ToastAndroid.SHORT)
-				Storage.set("token","")
-				CookieManager.clearAll()
-				this.props.navigation.navigate("Auth")  //清空webview cookies并且跳转到github认证页面
-			}
-			else{
-				Storage.set("userInfo",res)
-				this.props.navigation.dispatch(resetAction)   //重置路由跳转至tab页
-			}
-		})
+
+
+		// await Storage.set('token','Basic ' + base64_encode(username + ':' + password))
+		// api.get("/user").then(res=>{
+		// 	if(res.message == "Requires authentication"||res.message=="Bad credentials"){
+		// 		Storage.set("token","")
+		// 		return MyToast("账号或密码错误")
+		// 	}
+		// 	if(res.message == "Bad credentials. The API can't be accessed using username/password authentication. Please create a personal access token to access this endpoint: http://github.com/settings/tokens"){
+		// 		MyToast("不能使用账号密码登陆,此api已经被封")
+		// 		Storage.set("token","")
+		// 		CookieManager.clearAll()
+		// 		this.props.navigation.navigate("Auth")  //清空webview cookies并且跳转到github认证页面
+		// 	}
+		// 	else{
+		// 		Storage.set("userInfo",res)
+		// 		this.props.navigation.dispatch(resetAction)   //重置路由跳转至tab页
+		// 	}
+		// })
 	}
 	render(){
 		return (
@@ -100,6 +108,9 @@ class LoginPage extends Component {
 					</TouchableHighlight>
 				  </View>
 				</View>
+				<View style={{marginTop:20,position:"absolute",bottom:30}}>
+						<Text style={{color:"#666"}}>提示:登录api被封,请直接点击登录</Text>
+					</View>
 		  </View>)
 		);
 	}

@@ -17,6 +17,7 @@ import FollowerPage from "./pages/Follow/follower";
 import FollowingPage from "./pages/Follow/following";
 import {View,StatusBar} from 'react-native'
 import { enableScreens } from 'react-native-screens';
+import { RootSiblingParent } from 'react-native-root-siblings';
 enableScreens();
 
 const Container = createStackNavigator({
@@ -58,14 +59,11 @@ export default class App extends React.Component {
     constructor(props) {
         super(props);
     }
-
     render() {
+        const Wrapper = Platform.OS === 'ios' ? React.Fragment : RootSiblingParent;
         return (
-            <View
-                style={{
-                    flex : 1
-                }}
-            >
+            <Wrapper>
+            <View style={{flex : 1}}>
                 <StatusBar barStyle='dark-content' backgroundColor='rgba(0,0,0,0)' translucent={true}></StatusBar>
                 <Appcontainer/>
                 <MyLoading
@@ -74,6 +72,7 @@ export default class App extends React.Component {
                     }}
                 />
             </View>
+            </Wrapper>
         );
     }
 

@@ -5,8 +5,8 @@ import {
     Image,
     StyleSheet,
     TouchableHighlight,
-    ToastAndroid,
 } from 'react-native';
+import MyToast from '../../utils/Toast';
 import {dp2px} from '../../utils/utils'
 export default class SearchPage extends Component {
     constructor(props) {
@@ -33,7 +33,7 @@ export default class SearchPage extends Component {
         var _this = this
         if(!this.state.keyword){
 			this.refs.search.focus()
-			return ToastAndroid.show('请输入', ToastAndroid.SHORT)
+            return MyToast("请输入")
 		}
         this.props.navigation.navigate("SearchResult",{keyword:_this.state.keyword,title:_this.state.keyword})
     }
