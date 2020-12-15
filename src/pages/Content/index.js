@@ -96,7 +96,7 @@ export default class ContentPage extends Component {
         const dict = {
             img:["jpg","png","jpeg","bmp","svg"],
             video:["mp4","rmvb","avi","mkv"],
-            code:["java","py","ts","js","html","php","html","css","less","scss","c","go","vue"],
+            code:["java","py","ts","js","html","php","html","css","less","scss","c","go","vue","dart","tsx"],
             txt:["doc","docx","xls","xlsx","ppt","pptx","txt"]
         }
         for(var key in dict){
