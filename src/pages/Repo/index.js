@@ -141,7 +141,7 @@ export default class RepoPage extends Component {
         const dict = {
             jpg:["jpg","png","jpeg","bmp","svg"],
             video:["mp4","rmvb","avi","mkv"],
-            code:["java","py","ts","js","html","php","html","css","less","scss","c","go"],
+            code:["java","py","ts","js","html","php","html","css","less","scss","c","go","dart"],
             txt:["doc","docx","xls","xlsx","ppt","pptx","txt"]
         }
         const dictValue ={
