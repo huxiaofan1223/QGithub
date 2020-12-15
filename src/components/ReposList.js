@@ -68,10 +68,11 @@ const RepoList = (props) => {
             </TouchableHighlight>
             )
     }
+
   return (
     <FlatList
         style={{padding:20,paddingTop:10,paddingBottom:0}}
-        data={props.reposList}
+        data={props.reposList.sort((a,b)=>!(a.private&&!b.private))}
         renderItem={(data) => _renderItem(data)}
         keyExtractor={(item, index) => index.toString()}
         onEndReached={props.onEndReached}
