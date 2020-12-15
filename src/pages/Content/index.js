@@ -19,6 +19,7 @@ import { githubGist } from 'react-syntax-highlighter/styles/hljs';
 import RNFetchBlob from 'react-native-fetch-blob'
 import WebView from 'react-native-webview';
 import MarkdownWebView from '../../components/MarkdownWebView';
+import { docco } from 'react-syntax-highlighter/styles/hljs';
 
 const {height,width} =  Dimensions.get('window');
 export default class ContentPage extends Component {
@@ -150,6 +151,17 @@ export default class ContentPage extends Component {
     }
     render() {
         let {content,codeType,contentType,fileName} = this.state;
+        if(contentType=="code")
+            return(
+                   <View>
+                                          <SyntaxHighlighter
+                                          language={codeType}
+                                          style={githubGist}
+                                            >
+                                          {base64_decode(this.state.content.content)}
+                    </SyntaxHighlighter></View>
+                   )
+        else
         return (
             <ScrollView style={styles.container}>
                 {this.state.showLoad&&(<View style={styles.loading}>
@@ -169,7 +181,6 @@ export default class ContentPage extends Component {
                 </View>)}
                 {contentType=="img"&&(<View style={{height:height-100,alignItems:"center"}}><Image source={{uri:this.state.rawUrl||`data:image/png;base64,${content.content}`}} style={{height:height-100,width:this.state.imgWidth}} resizeMode="contain" onError={this.loadError.bind(this)} onLoad={(e)=>{this.setState({imgWidth:e.nativeEvent.source.width>width?"100%":e.nativeEvent.source.width})}}></Image></View>)}
                 {contentType=="video"&&(<View><Video source={{uri:this.state.rawUrl||`data:image/png;base64,${content.content}`}}></Video></View>)}
-                {contentType=="code"&&(<SyntaxHighlighter language={codeType} style={githubGist}>{base64_decode(this.state.content.content)}</SyntaxHighlighter>)}
                 {contentType=="txt"&&(
                 <View>
                     {this.state.markdownFlag&&(<View style={{flexDirection:"row",justifyContent:"space-around",marginBottom:10}}>
