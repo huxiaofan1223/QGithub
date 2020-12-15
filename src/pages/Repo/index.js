@@ -218,7 +218,7 @@ export default class RepoPage extends Component {
                             
                         </View>
                         <View style={{flexDirection:"row",marginBottom:5,alignItems:"center"}}>
-                            <View style={{padding:10,borderBottomWidth:2,borderColor:"#f9826c",flexDirection:"row"}}>
+                            <View style={{padding:10,borderBottomWidth:2,borderColor:"#f9826c",flexDirection:"row",alignItems:"center"}}>
                                 <Image source={require('../../images/code.png')} style={{height:20,width:20}}></Image>
                                 <Text>Code</Text>
                             </View>
@@ -226,7 +226,7 @@ export default class RepoPage extends Component {
                                 <Image source={require('../../images/issues.png')} style={{height:14,width:14,marginRight:5}}></Image>
                                 <Text style={{color:"#555",marginRight:5}} 
                                 onPress={()=>{this.props.navigation.navigate('Issues',{issuesUrl:`${repoInfo.url}/issues`})}}>Issues</Text>
-                                <View style={{height:20,borderRadius:10,padding:5,paddingTop:0,backgroundColor:"#d1d5da80",paddingBottom:0}}><Text style={{color:"#24292e"}}>{this.state.repoInfo.open_issues_count}</Text></View>
+                                <View style={{height:20,borderRadius:10,padding:5,paddingTop:0,backgroundColor:"#d1d5da80",paddingBottom:0,alignItems:"center"}}><Text style={{color:"#24292e"}}>{this.state.repoInfo.open_issues_count}</Text></View>
                             </View>
                             <View style={{padding:10,flexDirection:"row",alignItems:"center"}}>
                                 <Image source={require('../../images/pulls.png')} style={{height:16,width:16}}></Image>
@@ -237,7 +237,7 @@ export default class RepoPage extends Component {
                         </View>
                         <View style={{borderColor:"#ebebeb",borderWidth:dp2px(2),borderRadius:5,borderTopColor:"#F1F8FF"}}>
                             <TouchableHighlight style={{backgroundColor:"#F1F8FF",padding:10,flexDirection:"row"}} onPress={this.toUser.bind(this)} underlayColor="#f7f7f7">
-                                <View style={{flexDirection:"row"}}>
+                                <View style={{flexDirection:"row",alignItems:"center"}}>
                                     <Image source={{uri:repoInfo.owner.avatar_url}} style={{width:24,height:24,marginRight:10,borderRadius:12}}></Image>
                                     <Text>{repoInfo.owner.login}</Text>
                                 </View>
