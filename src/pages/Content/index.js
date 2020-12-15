@@ -153,13 +153,14 @@ export default class ContentPage extends Component {
         let {content,codeType,contentType,fileName} = this.state;
         if(contentType=="code")
             return(
-                   <View>
-                                          <SyntaxHighlighter
-                                          language={codeType}
-                                          style={githubGist}
-                                            >
-                                          {base64_decode(this.state.content.content)}
-                    </SyntaxHighlighter></View>
+                   <View style={{height:"100%"}}>
+                    <SyntaxHighlighter
+                    language={codeType}
+                    style={githubGist}
+                    >
+                    {base64_decode(this.state.content.content)}
+                    </SyntaxHighlighter>
+                    </View>
                    )
         else
         return (

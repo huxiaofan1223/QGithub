@@ -73,7 +73,6 @@ async function request(url,method,params,loading=true){
   const newUrl = url.indexOf("http")!= -1 ? url:`${baseURL}${url}`
   const qsURL = method=="GET"?newUrl + qs(params):newUrl
   const token = await Storage.get("token")
-  console.log(token)
   return new Promise((resolve,reject)=>{
     		fetch(qsURL,{
 		        method :method,
@@ -85,7 +84,6 @@ async function request(url,method,params,loading=true){
             body: method =="POST"?JSON.stringify(params):""
 		    })
 			.then((res) =>{
-        console.log(res)
         if(res.headers.map["content-type"].indexOf("text/html") === 0)
           return res.text()
         return res.json()
