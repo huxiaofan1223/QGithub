@@ -25,25 +25,35 @@ export default class AuthPage extends Component{
 			loading:true
 		}
 	}
-	qs2json(qstring){
-		let arr = qstring.split("&")
-		let ob = {}
-		for(let i of arr){
-			const newARR = i.split("=")
-			ob[newARR[0]] = newARR[1]
+	formQs(params){
+		if (params) {
+			let paramsArray = []
+			Object.keys(params).forEach(key => paramsArray.push(key + '=' + params[key]))
+			return paramsArray.join('&')
 		}
-		return ob
+		return ""
 	}
 	success(code){
 		loadingUtils.show()
-		let _this = this
-		let url = `https://github.com/login/oauth/access_token?client_id=${clientID}&client_secret=${secret}&code=${code}`
-		fetch(url)
-		.then(res=>res.text())
+		let url = 'https://github.com/login/oauth/access_token'
+		let params = {
+			code,
+			client_id:clientID,
+			client_secret:secret
+		}
+		fetch(url,{
+      method :'POST',
+      body:this.formQs(params),
+      headers:{
+        'Accept': 'application/json',
+        'Content-Type':'application/x-www-form-urlencoded'
+      }
+    })
+    .then(res=>res.json())
 		.then(res=>{
-			let tokenInfo = this.qs2json(res)
-			const token = tokenInfo.access_token         //token8个小时过期
-			Storage.set("refreshToken",tokenInfo.refresh_token)    //存refresh_token   6个月过期
+			const token = res.access_token         //token8个小时过期
+			console.log(token)
+			Storage.set("refreshToken",res.refresh_token)    //存refresh_token   6个月过期
 			Storage.set("token","token "+token).then(()=>{
 				loadingUtils.hide()
 				this.props.navigation.dispatch(resetAction)
@@ -57,6 +67,7 @@ export default class AuthPage extends Component{
 			source={{uri:`https://github.com/login/oauth/authorize?client_id=${clientID}`}}
 			onNavigationStateChange={e=>{
 				let url = e.url
+				console.log(url)
 				if (url.indexOf('http://qgithub.auth') === 0) {
 					const code = url.split("?code=")[1]
 					this.success(code)
@@ -66,6 +77,7 @@ export default class AuthPage extends Component{
 			}}
 			onShouldStartLoadWithRequest={e=>{
 				let url = e.url
+				console.log(url)
 				if (url.indexOf('http://qgithub.auth') === 0) {
 					const code = url.split("?code=")[1]
 					this.success(code)

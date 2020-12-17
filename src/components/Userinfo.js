@@ -36,15 +36,15 @@ const userInfo = (props) => {
           }}>LOGOUT</Text>)}
       </View>
       <View style={{flexDirection:"row",flexWrap:"wrap",justifyContent:"space-around"}}>
-            {props.userInfo.location!=""&&(<View style={{flexDirection:"row",alignItems:"center",marginTop:6}}>
+            {!!props.userInfo.location&&(<View style={{flexDirection:"row",alignItems:"center",marginTop:6}}>
               <Image source={require('../images/map.png')} style={{width:20,height:20}}></Image>
               <Text style={{color:"#444"}}>{props.userInfo.location}</Text>
           </View>)}
-            {props.userInfo.company!=null&&(<View style={{flexDirection:"row",alignItems:"center",marginTop:6}}>
+            {!!props.userInfo.company&&(<View style={{flexDirection:"row",alignItems:"center",marginTop:6}}>
               <Image source={require('../images/company.png')} style={{width:20,height:20}}></Image>
               <Text style={{color:"#444"}}>{props.userInfo.company}</Text>
           </View>)}
-            {props.userInfo.blog!=""&&(<View style={{flexDirection:"row",alignItems:"center",marginTop:6}}>
+            {!!props.userInfo.blog&&(<View style={{flexDirection:"row",alignItems:"center",marginTop:6}}>
               <Image source={require('../images/link.png')} style={{width:20,height:20}}></Image>
               <Text style={{color:"#444",maxWidth:width-80}}>{props.userInfo.blog}</Text>
           </View>)}

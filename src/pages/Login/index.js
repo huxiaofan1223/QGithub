@@ -45,8 +45,11 @@ class LoginPage extends Component {
 		this.refs.usn.blur()
 		this.refs.pwd.blur()
 		let{ username,password } = this.state
-		CookieManager.clearAll()
-		this.props.navigation.navigate("Auth")  //清空webview cookies并且跳转到github认证页面
+		CookieManager.clearAll().then(()=>{
+			console.log("清空cookies成功");
+			this.props.navigation.navigate("Auth")  //清空webview cookies并且跳转到github认证页面
+		})
+		
 		return 
 
 		if (!username){
