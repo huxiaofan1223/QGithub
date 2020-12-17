@@ -65,11 +65,13 @@ export default class AuthPage extends Component{
 			<WebView
 			style={{height:"100%"}}
 			source={{uri:`https://github.com/login/oauth/authorize?client_id=${clientID}`}}
+			// source={{uri:'https://github.com/apps/qffgithub/installations/new'}}
 			onNavigationStateChange={e=>{
 				let url = e.url
 				console.log(url)
 				if (url.indexOf('http://qgithub.auth') === 0) {
 					const code = url.split("?code=")[1]
+					console.log(code)
 					this.success(code)
 					return false
 				}
@@ -80,6 +82,7 @@ export default class AuthPage extends Component{
 				console.log(url)
 				if (url.indexOf('http://qgithub.auth') === 0) {
 					const code = url.split("?code=")[1]
+					console.log(code)
 					this.success(code)
 					return false
 				}
