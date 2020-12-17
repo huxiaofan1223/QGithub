@@ -90,6 +90,7 @@ async function request(url,method,params,loading=true){
       })
 			.then((responseJson) => {
         loading&&loadingUtils.hide()
+        console.log(responseJson)
         if(responseJson.message == "Bad credentials"){
           if(isRefershing)
             refreshToken().then(res=>{

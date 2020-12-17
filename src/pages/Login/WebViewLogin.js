@@ -18,11 +18,15 @@ function Loading(){
 		</View>
 	)
 }
+const installUrl = "https://github.com/apps/qffgithub/installations/new"
+const noInstall = "http://qgithub.auth/?code=685b29b3255178b4a2a6&installation_id=13587779&setup_action=install"
+const hasInstall = "https://github.com/settings/installations/"
 export default class AuthPage extends Component{
 	constructor(props) {
 		super(props)
 		this.state={
-			loading:true
+			loading:true,
+			url:`https://github.com/login/oauth/authorize?client_id=${clientID}`,
 		}
 	}
 	formQs(params){
@@ -56,7 +60,10 @@ export default class AuthPage extends Component{
 			Storage.set("refreshToken",res.refresh_token)    //存refresh_token   6个月过期
 			Storage.set("token","token "+token).then(()=>{
 				loadingUtils.hide()
-				this.props.navigation.dispatch(resetAction)
+				this.setState({
+					url:installUrl
+				})
+				// this.props.navigation.dispatch(resetAction)
 			})
 		})
 	}
@@ -64,30 +71,31 @@ export default class AuthPage extends Component{
 		return (
 			<WebView
 			style={{height:"100%"}}
-			source={{uri:`https://github.com/login/oauth/authorize?client_id=${clientID}`}}
-			// source={{uri:'https://github.com/apps/qffgithub/installations/new'}}
+			source={{uri:this.state.url}}
 			onNavigationStateChange={e=>{
 				let url = e.url
-				console.log(url)
-				if (url.indexOf('http://qgithub.auth') === 0) {
+				if (url.indexOf('http://qgithub.auth') === 0  && url.indexOf("installation_id")== -1) {
 					const code = url.split("?code=")[1]
-					console.log(code)
 					this.success(code)
 					return false
 				}
-				return true
-			}}
-			onShouldStartLoadWithRequest={e=>{
-				let url = e.url
-				console.log(url)
-				if (url.indexOf('http://qgithub.auth') === 0) {
-					const code = url.split("?code=")[1]
-					console.log(code)
-					this.success(code)
-					return false
+				if(url.indexOf(hasInstall) === 0 || url.indexOf('http://qgithub.auth') === 0){
+					this.props.navigation.dispatch(resetAction)
 				}
 				return true
 			}}
+			// onShouldStartLoadWithRequest={e=>{
+			// 	let url = e.url
+			// 	if (url.indexOf('http://qgithub.auth') === 0  && url.indexOf("installation_id")== -1) {
+			// 		const code = url.split("?code=")[1]
+			// 		this.success(code)
+			// 		return false
+			// 	}
+			// 	if(url.indexOf(hasInstall) === 0 || url.indexOf('http://qgithub.auth') === 0){
+			// 		this.props.navigation.dispatch(resetAction)
+			// 	}
+			// 	return true
+			// }}
 			javaScriptEnabled={true}
 			domStorageEnabled={true}
 			scalesPageToFit={true}
