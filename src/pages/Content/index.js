@@ -16,7 +16,7 @@ import api from '../../utils/request'
 import { base64_decode } from '../../utils/base64'
 import SyntaxHighlighter from 'react-native-syntax-highlighter';
 import { githubGist } from 'react-syntax-highlighter/styles/hljs';
-import RNFetchBlob from 'react-native-fetch-blob'
+// import RNFetchBlob from 'react-native-fetch-blob'
 import WebView from 'react-native-webview';
 import MarkdownWebView from '../../components/MarkdownWebView';
 import { docco } from 'react-syntax-highlighter/styles/hljs';
@@ -66,28 +66,28 @@ export default class ContentPage extends Component {
                 })
             })
     }
-    async loadError(){
-        let _this = this
-        this.setState({showLoad:true})
-        let token = Storage.get('token')
-        if(this.state.rawUrl)
-            RNFetchBlob.config({
-                // fileCache : true,
-              })
-            .fetch('GET', _this.state.rawUrl,{
-                'Authorization': token
-            })
-            .progress((received, total) => {
-                const loadProgress = `${_this.sizeFilter(received)}/${_this.sizeFilter(total)}`
-                this.setState({loadProgress})
-            })
-            .then((res) => {
-                const content = {content:res.base64()}
-                const rawUrl = ""
-                _this.setState({content,rawUrl,showLoad:false})
-            })
-            .catch((err)=>{console.log('err',err);_this.setState({showLoad:false})})
-    }
+    // async loadError(){
+    //     let _this = this
+    //     this.setState({showLoad:true})
+    //     let token = Storage.get('token')
+    //     if(this.state.rawUrl)
+    //         RNFetchBlob.config({
+    //             // fileCache : true,
+    //           })
+    //         .fetch('GET', _this.state.rawUrl,{
+    //             'Authorization': token
+    //         })
+    //         .progress((received, total) => {
+    //             const loadProgress = `${_this.sizeFilter(received)}/${_this.sizeFilter(total)}`
+    //             this.setState({loadProgress})
+    //         })
+    //         .then((res) => {
+    //             const content = {content:res.base64()}
+    //             const rawUrl = ""
+    //             _this.setState({content,rawUrl,showLoad:false})
+    //         })
+    //         .catch((err)=>{console.log('err',err);_this.setState({showLoad:false})})
+    // }
     sizeFilter(size){
         return `${(size/1024/1024).toFixed(2)}MB`
     }
@@ -180,7 +180,7 @@ export default class ContentPage extends Component {
                         </Text>
                     </TouchableOpacity>
                 </View>)}
-                {contentType=="img"&&(<View style={{height:height-100,alignItems:"center"}}><Image source={{uri:this.state.rawUrl||`data:image/png;base64,${content.content}`}} style={{height:height-100,width:this.state.imgWidth}} resizeMode="contain" onError={this.loadError.bind(this)} onLoad={(e)=>{this.setState({imgWidth:e.nativeEvent.source.width>width?"100%":e.nativeEvent.source.width})}}></Image></View>)}
+                {contentType=="img"&&(<View style={{height:height-100,alignItems:"center"}}><Image source={{uri:this.state.rawUrl||`data:image/png;base64,${content.content}`}} style={{height:height-100,width:this.state.imgWidth}} resizeMode="contain" onLoad={(e)=>{this.setState({imgWidth:e.nativeEvent.source.width>width?"100%":e.nativeEvent.source.width})}}></Image></View>)}
                 {contentType=="video"&&(<View><Video source={{uri:this.state.rawUrl||`data:image/png;base64,${content.content}`}}></Video></View>)}
                 {contentType=="txt"&&(
                 <View>

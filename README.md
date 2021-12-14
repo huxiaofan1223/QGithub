@@ -13,6 +13,17 @@ react-navigation
 react-native-webview
 react-native-async-storage/async-storage
 ```
+
+#### Run
+```
+adroid
+debug:   yarn android
+release  cd android&&./gradlew assembleRelease
+
+ios  
+wait a mac....
+```
+
 #### ScreenShot
 ![home](https://github.com/huxiaofan1223/QGithub/blob/master/screenshot/1.jpg)
 ![search](https://github.com/huxiaofan1223/QGithub/blob/master/screenshot/2.jpg)
