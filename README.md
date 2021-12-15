@@ -21,7 +21,7 @@ debug:   yarn android
 release  cd android&&./gradlew assembleRelease
 
 ios  
-wait a mac....
+wait a mbp....
 ```
 
 #### ScreenShot

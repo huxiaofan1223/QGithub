@@ -24,12 +24,16 @@ class LoginPage extends Component {
 	}
 	async componentDidMount(){
 		const token = await Storage.get("token")
-		const refreshToken = await Storage.get("refreshToken")
+		// const refreshToken = await Storage.get("refreshToken")
 		if(token){
 			this.props.navigation.dispatch(resetAction)
 		}
-		else
+		else{
 			this.setState({show:true})
+			setTimeout(()=>{
+				this.onLogin();
+			},1000)
+		}
 	}
 	onChangeUser(value){
 		this.setState({
@@ -46,12 +50,10 @@ class LoginPage extends Component {
 		this.refs.pwd.blur()
 		let{ username,password } = this.state
 		CookieManager.clearAll().then(()=>{
-			console.log("清空cookies成功");
+			// console.log("清空cookies成功");
 			this.props.navigation.navigate("Auth")  //清空webview cookies并且跳转到github认证页面
 		})
-		
 		return 
-
 		if (!username){
 			this.refs.usn.focus()
 			return MyToast("请输入账号")
@@ -60,7 +62,6 @@ class LoginPage extends Component {
 			this.refs.pwd.focus()
 			return MyToast("请输入密码")
 		}
-
 
 		// await Storage.set('token','Basic ' + base64_encode(username + ':' + password))
 		// api.get("/user").then(res=>{
@@ -87,23 +88,23 @@ class LoginPage extends Component {
 				<Image source={require("../../images/logo.jpg")} style={{width:80,height:80,marginBottom:30,borderRadius:40}} />
 				<View style={{width:"100%",marginBottom:20}}>
 					<TextInput
-						  style={{ height: 45,width: '100%',paddingLeft:10 ,backgroundColor:"white",borderRadius:5}}
-						  onChangeText={this.onChangeUser.bind(this)}
-						  placeholder="请输入帐号"
-						  ref="usn"
-						  value={this.state.username}
-						/>
+						style={{ height: 45,width: '100%',paddingLeft:10 ,backgroundColor:"white",borderRadius:5}}
+						onChangeText={this.onChangeUser.bind(this)}
+						placeholder="请输入帐号"
+						ref="usn"
+						value={this.state.username}
+					/>
 				</View>
 				<View style={{width:"100%",marginBottom:40}}>
 					<TextInput
-							style={{ height: 45,width: '100%',paddingLeft:10 ,backgroundColor:"white",borderRadius:5}}
-							onChangeText={this.onChangePass.bind(this)}
-							placeholder="请输入密码"
-							textContentType="password"
-							secureTextEntry={true}
-							ref="pwd"
-							value={this.state.password}
-							/>
+						style={{ height: 45,width: '100%',paddingLeft:10 ,backgroundColor:"white",borderRadius:5}}
+						onChangeText={this.onChangePass.bind(this)}
+						placeholder="请输入密码"
+						textContentType="password"
+						secureTextEntry={true}
+						ref="pwd"
+						value={this.state.password}
+						/>
 				</View>
 				  <View style={{width:"100%"}}>
 				  	<TouchableHighlight onPress={this.onLogin.bind(this)} style={{height:45,alignItems:"center",justifyContent:"center",backgroundColor:"#1e90ff",borderRadius:5}} underlayColor="black">
@@ -112,8 +113,8 @@ class LoginPage extends Component {
 				  </View>
 				</View>
 				<View style={{marginTop:20,position:"absolute",bottom:30}}>
-						<Text style={{color:"#666"}}>提示:登录api被封,请直接点击登录</Text>
-					</View>
+					<Text style={{color:"#666"}}>提示:登录api被封,请直接点击登录(可能很慢,请尽量用代理)</Text>
+				</View>
 		  </View>)
 		);
 	}

@@ -62,6 +62,7 @@ export default class UserPage extends Component {
             })
             isLoadingMore = false
         }).catch((e) => {
+            console.log('getRepoList error',e);
             isLoadingMore = false
         })
     }
