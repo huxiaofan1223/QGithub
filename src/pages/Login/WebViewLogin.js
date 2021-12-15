@@ -3,7 +3,7 @@ import {clientID,secret} from '../../config'
 import React,{Component} from 'react';
 import Storage from '../../utils/storage'
 import {StackActions,NavigationActions} from 'react-navigation'
-import {Text,ActivityIndicator,View} from 'react-native'
+import {ActivityIndicator,View} from 'react-native'
 
 const resetAction = StackActions.reset({
   index: 0,
@@ -14,7 +14,7 @@ let loginTimer = null;
 function Loading(){
 	return (
 		<View style={{height:"100%",alignItems:"center",justifyContent:"center"}}>
-				<ActivityIndicator color="#555" size="large"/>
+			<ActivityIndicator color="#555" size="large"/>
 		</View>
 	)
 }
@@ -112,7 +112,6 @@ export default class AuthPage extends Component{
 			automaticallyAdjustContentInsets={true}
 			allowUniversalAccessFromFileURLs={true}
 			mediaPlaybackRequiresUserAction={true}
-			startInLoadingState={true}
 			startInLoadingState = { true } 
   			renderLoading = {()=> <Loading />}
 			></WebView>

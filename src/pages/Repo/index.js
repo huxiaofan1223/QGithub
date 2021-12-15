@@ -7,9 +7,8 @@ import {
     TouchableHighlight,
     ScrollView,
     BackHandler,
-    Linking,
-    Alert,
-    RefreshControl
+    RefreshControl,
+    ActivityIndicator
 } from 'react-native';
 import api from '../../utils/request'
 import { base64_decode } from '../../utils/base64'
@@ -18,7 +17,16 @@ import MarkdownWebView from '../../components/MarkdownWebView'
 import {HeaderBackButton} from 'react-navigation-stack'
 import { dp2px } from '../../utils/utils';
 
-//这个组件逻辑偏乱 有能力的慢慢看
+
+function Loading(){
+	return (
+		<View style={{height:"100%",alignItems:"center",justifyContent:"center"}}>
+			<ActivityIndicator color="#555" size="large"/>
+		</View>
+	)
+}
+
+//这个组件逻辑偏乱
 let pathArr = []
 export default class RepoPage extends Component {
     static navigationOptions =  ({ navigation }) =>({
@@ -43,6 +51,7 @@ export default class RepoPage extends Component {
             nowPath:"",
             htmlContent:"<h1></h1>",
             webviewHeight:300,
+            webviewFlag:true
         }
         this.backFunction=null
     }
@@ -59,8 +68,12 @@ export default class RepoPage extends Component {
     getContentsList(repoUrl){
         const contentsUrl = `${repoUrl}/contents`
         api.get(contentsUrl,{},false).then(res=>{
-            const contentsList = res.sort((a,b)=>!(a.type == "dir"&& b.type=="file"))  //文件夹和文件排序排序   保证文件夹在文件前面
-            this.setState({contentsList})
+            try{
+                const contentsList = res.sort((a,b)=>!(a.type == "dir"&& b.type=="file"))  //文件夹和文件排序排序   保证文件夹在文件前面
+                this.setState({contentsList})
+            } catch(err){
+                console.log('maybe empty',err);
+            }
         })
     }
     getGithubHTML(readMeCotent){
@@ -70,6 +83,7 @@ export default class RepoPage extends Component {
         return api.post("/markdown",params,false)
     }
     async componentDidMount(){
+        // pathArr = [];
         this.backFunction= this.onBackHandler.bind(this)
         BackHandler.addEventListener('hardwareBackPress',this.backFunction)  //监听返回
         this._unsubscribe = this.props.navigation.addListener('didFocus', payload =>{
@@ -79,20 +93,29 @@ export default class RepoPage extends Component {
             BackHandler.removeEventListener('hardwareBackPress',this.backFunction)
         })  //路由监听跳转并且再取消监听返回
         this.props.navigation.setParams({back:this.backFunction.bind(true)})  //或许不要bind(true)也行，我懒得试了  传函数给appbar调用
-        this.init()
+        await this.init();
     }
     async init(){
         this.setState({loading:true})
         const repoUrl = this.props.navigation.getParam("repoUrl")
-        this.getRepoInfo(repoUrl)  //获取仓库信息
-        this.getContentsList(repoUrl)   //获取仓库文件内容
-        const readMeObject = await this.getReadme(repoUrl)  //获取readme的base64格式
-        const htmlContent=await this.getGithubHTML(base64_decode(readMeObject.content))   //获取readme的html格式
-        this.setState({
-            repoUrl,
-            htmlContent,
-            loading:false
-        })
+        try{
+            this.getRepoInfo(repoUrl)  //获取仓库信息
+            this.getContentsList(repoUrl)   //获取仓库文件内容
+            const readMeObject = await this.getReadme(repoUrl)  //获取readme的base64格式
+            const htmlContent=await this.getGithubHTML(base64_decode(readMeObject.content))   //获取readme的html格式
+            this.setState({
+                repoUrl,
+                htmlContent,
+                loading:false
+            })
+        }catch(err){
+            console.log("maybe not have readme",err);
+            this.setState({
+                repoUrl,
+                htmlContent:"",
+                loading:false
+            })
+        }
     }
     componentWillUnmount = () => {
         this._unsubscribe&&this._unsubscribe.remove()   //路由返回监听取消
@@ -118,7 +141,12 @@ export default class RepoPage extends Component {
     }
     onBackHandler(headerLeftButton=false) {
         if(pathArr.length==0){
-            headerLeftButton&&this.props.navigation.goBack()  //appbar中需要调用navigation.back()
+            this.setState({
+                webviewFlag:false
+            })
+            setTimeout(()=>{
+                headerLeftButton&&this.props.navigation.goBack();
+            },200)  //appbar中需要调用navigation.back()
             return false
         }
         else{
@@ -178,11 +206,16 @@ export default class RepoPage extends Component {
         webviewHeight!=40&&this.setState({webviewHeight})
     }
     toUser(){
-        const flag = this.state.repoInfo.owner.url!=undefined
-        flag&&this.props.navigation.push("Others",{otherUrl:this.state.repoInfo.owner.url,title:this.state.repoInfo.owner.login})
+        this.setState({
+            webviewFlag:false
+        })
+        setTimeout(()=>{
+            const flag = this.state.repoInfo.owner.url!=undefined
+            flag&&this.props.navigation.push("Others",{otherUrl:this.state.repoInfo.owner.url,title:this.state.repoInfo.owner.login})
+        },200)
     }
     render() {
-        const {repoInfo} = this.state
+        const {repoInfo,webviewFlag} = this.state
         return (
                 <ScrollView style={styles.container}
                     refreshControl={
@@ -247,22 +280,26 @@ export default class RepoPage extends Component {
                             })}
                         </View>
                     </View>
-                    <WebView
-                        style={{height:this.state.webviewHeight+20}}
-                        originWhitelist={['*']}
-                        source={{html:MarkdownWebView(this.state.htmlContent)}}
-                        injectedJavaScript='window.ReactNativeWebView.postMessage(document.body.scrollHeight)'
-                        onMessage={this.calcHeight.bind(this)}
-                        // onShouldStartLoadWithRequest={(e)=> {
-                        //     Alert.alert('即将使用浏览器打开网页',e.url,
-                        //         [
-                        //             {text:"取消", onPress:()=>false},
-                        //             {text:"确认", onPress:()=>{Linking.openURL(e.url)}}
-                        //         ]
-                        //     );
-                        //     return false
-                        // }}
-                    ></WebView>
+                    {webviewFlag&&(
+                        <WebView
+                            style={{height:this.state.webviewHeight+20}}
+                            originWhitelist={['*']}
+                            source={{html:MarkdownWebView(this.state.htmlContent)}}
+                            injectedJavaScript='window.ReactNativeWebView.postMessage(document.body.scrollHeight)'
+                            onMessage={this.calcHeight.bind(this)}
+                            startInLoadingState = { true } 
+                            renderLoading = {()=> <Loading />}
+                            // onShouldStartLoadWithRequest={(e)=> {
+                            //     Alert.alert('即将使用浏览器打开网页',e.url,
+                            //         [
+                            //             {text:"取消", onPress:()=>false},
+                            //             {text:"确认", onPress:()=>{Linking.openURL(e.url)}}
+                            //         ]
+                            //     );
+                            //     return false
+                            // }}
+                        ></WebView>
+                    )}
                 </ScrollView>
         );
     }

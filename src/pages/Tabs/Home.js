@@ -54,7 +54,7 @@ export default class UserPage extends Component {
             page:page++,
             per_page:10
         }
-        api.get(repoUrl,params,false).then(res=>{
+        api.get(repoUrl,params,true).then(res=>{
             const reposList = page==2?res:this.state.reposList.concat(res)
             this.setState({
                 reposList,
@@ -99,8 +99,8 @@ export default class UserPage extends Component {
                     Header={this._Header.bind(this)}
                     refreshControl={
                         <RefreshControl
-                        refreshing={this.state.loading}
-                        onRefresh={this.init.bind(this)}
+                            refreshing={this.state.loading}
+                            onRefresh={this.init.bind(this)}
                         />
                     }
                     >

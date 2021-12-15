@@ -24,7 +24,7 @@ export default class OthersPage extends Component {
 		}
     }
     async componentDidMount(){
-        this.init()
+        await this.init();
     }
     async init(){
         const otherUrl= this.props.navigation.getParam("otherUrl")
@@ -65,7 +65,7 @@ export default class OthersPage extends Component {
             per_page:10
         }
 
-        api.get(repoUrl,params,false).then(res=>{
+        api.get(repoUrl,params,true).then(res=>{
             const reposList = page==2?res:this.state.reposList.concat(res)
             this.setState({reposList})
             isLoadingMore = false

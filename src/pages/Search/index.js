@@ -89,8 +89,8 @@ export default class SearchResultPage extends Component {
     Header(){
         return(
             <View style={{flexDirection:"row",justifyContent:"space-between",paddingBottom:10}}>
-                <Text>已显示{this.state.reposList.length}</Text>
-                <Text>总共{this.state.total_count}</Text>
+                <Text>已显示:{this.state.reposList.length}</Text>
+                <Text>总共:{this.state.total_count}</Text>
             </View>
         )
     }

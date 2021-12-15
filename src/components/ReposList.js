@@ -78,7 +78,17 @@ const RepoList = (props) => {
         onEndReached={props.onEndReached}
         onEndReachedThreshold={0.1}
         ListHeaderComponent={props.Header}
-        refreshControl={props.refreshControl}>
+        refreshControl={props.refreshControl}
+        ListFooterComponent={ () => (
+            !props.reposList.length ? 
+            (
+                <View style={{justifyContent:'center',alignItems:'center',marginTop:200}}>
+                    <Text>Empty</Text>
+                </View>
+            )
+            : null
+        )}
+    >
     </FlatList>
   )
 }
