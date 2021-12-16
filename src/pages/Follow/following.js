@@ -24,8 +24,10 @@ export default class FollowingPage extends Component {
     }
     componentWillUnmount = () => {
         this.setState = (state,callback)=>{
-        return;
+            return;
         };
+        page = 1
+        isLoadingMore = false
     }
     getFollowingList(){
         const followingUrl = this.props.navigation.getParam("followingUrl")

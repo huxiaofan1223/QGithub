@@ -18,7 +18,7 @@ react-native-async-storage/async-storage
 ```
 adroid
 debug:   yarn android
-release  cd android&&./gradlew assembleRelease
+release  cd android && ./gradlew assembleRelease
 
 ios  
 wait a mbp....
