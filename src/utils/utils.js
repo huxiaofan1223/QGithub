@@ -1,8 +1,4 @@
-import {
-    PixelRatio, 
-  } from 'react-native'
-import Storage from './storage'
-import {clientID,secret} from '../config'
+import { PixelRatio } from 'react-native'
 
 export function dp2px(x){
     return x / PixelRatio.get()

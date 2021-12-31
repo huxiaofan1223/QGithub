@@ -1,5 +1,5 @@
 import WebView from "react-native-webview";
-import {clientID,secret} from '../../config'
+import {client_id,client_secret} from '../../config'
 import React,{Component} from 'react';
 import Storage from '../../utils/storage'
 import {StackActions,NavigationActions} from 'react-navigation'
@@ -29,7 +29,7 @@ export default class AuthPage extends Component{
 		super(props)
 		this.state={
 			loading:true,
-			url:`https://github.com/login/oauth/authorize?client_id=${clientID}`,
+			url:`https://github.com/login/oauth/authorize?client_id=${client_id}`,
 		}
 	}
 	componentDidMount(){
@@ -52,8 +52,8 @@ export default class AuthPage extends Component{
 		let url = 'https://github.com/login/oauth/access_token'
 		let params = {
 			code,
-			client_id:clientID,
-			client_secret:secret
+			client_id:client_id,
+			client_secret:client_secret
 		}
 		fetch(url,{
 			method :'POST',

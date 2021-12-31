@@ -1,11 +1,12 @@
 import Storage from './storage'
 import loadingUtils from './loadingUtils'
-import {clientID,secret} from '../config'
+import {client_id,client_secret} from '../config'
 
 const baseURL = "https://api.github.com"
 let isRefershing = true
 let requestList = []
 
+//这个刷新token有瑕疵,最好的做法是记录过期时间,每次请求之前判断是否过期,再确定是否需要直接刷新token
 function qs(params){
   let url = ""
   if (params) {
@@ -43,8 +44,8 @@ async function refreshToken(){
   const params = {
     refresh_token,
     grant_type:"refresh_token",
-    client_id:clientID,
-    client_secret:secret
+    client_id:client_id,
+    client_secret:client_secret
   }
   return new Promise((resolve,reject)=>{
     fetch(url,{
@@ -90,7 +91,6 @@ async function request(url,method,params,loading=true){
       })
 			.then((responseJson) => {
         loading&&loadingUtils.hide()
-        // console.log(responseJson)
         if(responseJson.message == "Bad credentials"){
           if(isRefershing)
             refreshToken().then(res=>{
@@ -112,11 +112,11 @@ async function request(url,method,params,loading=true){
 }
 
 
-function get(url,params,loading){
-  return request(url,"GET",params,loading)
+function get(url,params,loadingFlag){
+  return request(url,"GET",params,loadingFlag)
 }
-function post(url,params,loading){
-  return request(url,"POST",params,loading)
+function post(url,params,loadingFlag){
+  return request(url,"POST",params,loadingFlag)
 }
 
 module.exports = {
